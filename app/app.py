@@ -1,22 +1,21 @@
 from flask import Flask
-import logging
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
+db = SQLAlchemy()
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_object("config")
+app.config.from_pyfile("config.py")
+db = SQLAlchemy(app)
 
+ma = Marshmallow(app)
 
-app = Flask(__name__)
+from models.empl import emp
+from main import main
+from models.dep import dep
+from api.views import api
 
-logger = logging.getLogger(__name__)
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-
-ch.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-
-logger.addHandler(ch)
-
-logger.info('Web-app started')
-app.run(debug=True)
-
+app.register_blueprint(main)
+app.register_blueprint(emp)
+app.register_blueprint(dep)
+app.register_blueprint(api)

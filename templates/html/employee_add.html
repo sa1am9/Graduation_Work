@@ -1,24 +1,69 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('emp.show_employees') }}">Back to employees</a>
+{% endblock %}
 {% block content %}
-<div class="list_title"><b>Employee</b></div>
-<form class="form" action="{{url_for('add_employee')}}" method="post">
-        <label for="name_input">Name: </label>
-        <input type="text" name="name" id="name_input" value="" minlength="2" maxlength="45">
-        <br>
-        <label for="department_input">Department: </label>
-        <select class="departments_list" id="department_input" name="department_id" size="1">
-          {% for dep_id in ids %}
-            <option value="{{dep_id}}">{{dep_id}}</option>
-          {% endfor %}
-        </select>
-        <br>
-        <label for="birthday_input">Date of birthday: </label>
-        <input type="date" name="date_of_birthday" id="birthday_input" value="">
-        <br>
-        <label for="salary_input">Salary: </label>
-        <input type="number" name="salary" id="salary_input" value="">
-        <br>
-        <input type="submit" class="button save_button" name="save_button" value="SAVE">
-        <div class="button"><a href="{{url_for('employees')}}">CANCEL</a></div>
-      </form>
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
+        <div class="form-group">
+          {{ form.name.label(class="form-control-label") }}
+          {% if form.name.errors %}
+            {{ form.name(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.name.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.name(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.date_of_birth.label(class="form-control-label") }}
+          {% if form.date_of_birth.errors %}
+            {{ form.date_of_birth(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.date_of_birth.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.date_of_birth(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.salary.label(class="form-control-label") }}
+          {% if form.salary.errors %}
+            {{ form.salary(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.salary.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.salary(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          {{ form.department_id.label(class="form-control-label") }}
+          {% if form.department_id.errors %}
+            {{ form.department_id(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.department_id.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.department_id(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+    </form>
+  </div>
 {% endblock %}

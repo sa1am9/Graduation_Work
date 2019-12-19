@@ -1,7 +1,10 @@
-import os
-from flask import Flask
+from flask import render_template, Blueprint
 
 
-if __name__ == '__main__':
-    app = Flask(__name__)
-    app.run(debug=True, host='127.0.0.1')
+main = Blueprint("main", __name__)
+
+
+@main.route("/")
+def home():
+    """Render home page"""
+    return render_template("home.html", title="Home")

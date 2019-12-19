@@ -1,12 +1,43 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
 {% block content %}
-      <div class="list_title"><b>Department</b></div>
-      <form class="form" action="{{url_for('department',  dep_id=dep_id)}}" method="post">
-        <label for="department_id">Department number: </label>
-        <input type="text" name="department_id" id="department_id" value="{{dep_id}}" minlength="5"
-               maxlength="5">
-        <br>
-        <input type="submit" class="button save_button" name="save_button" value="SAVE">
-        <div class="button"><a href="{{url_for('departments')}}">CANCEL</a></div>
-      </form>
+  <div class="content-section">
+    <h1>{{ department.name }}</h1>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">{{ department.id }}</th>
+          <td>{{ department.name }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+      <a class="btn btn-secondary mt-1 mb-1" href="{{ url_for('dep.update_department', department_id=department.id) }}">Update</a>
+      <button type="button" class="btn btn-danger m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Department?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('dep.delete_department', department_id=department.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

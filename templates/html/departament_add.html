@@ -1,12 +1,30 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('dep.show_departments') }}">Back to departments</a>
+{% endblock %}
 {% block content %}
-      <div class="list_title"><b>Department</b></div>
-      <form class="form" action="{{url_for('add_department')}}" method="post">
-        <label for="department_id">Department number: </label>
-        <input type="text" name="department_id" id="department_id" value="" minlength="5"
-               maxlength="5">
-        <br>
-        <input type="submit" class="button save_button" name="save_button" value="SAVE">
-        <div class="button"><a href="{{url_for('departments')}}">CANCEL</a></div>
-      </form>
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">{{ legend }}</legend>
+        <div class="form-group">
+          {{ form.name.label(class="form-control-label") }}
+          {% if form.name.errors %}
+            {{ form.name(class="form-control form-control-lg is-invalid") }}
+            <div class="invalid-feedback">
+              {% for error in form.name.errors %}
+                <span>{{ error }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.name(class="form-control form-control-lg") }}
+          {% endif %}
+        </div>
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+    </form>
+  </div>
 {% endblock %}

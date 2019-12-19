@@ -1,28 +1,36 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('emp.search_employees') }}">Search employees</a>
+  <a class="nav-item nav-link" href="{{ url_for('emp.add_employee') }}">New employee</a>
+{% endblock %}
 {% block content %}
-<div class="list_title"><b>Employee</b></div>
-      <form class="form" action="{{url_for('employee', employee_id=employee_data['id'])}}" method="post">
-        <label for="name_input">Name: </label>
-        <input type="text" name="name" id="name_input" value="{{employee_data['name']}}" minlength="2" maxlength="45">
-        <br>
-        <label for="department_input">Department: </label>
-        <select class="departments_list" id="department_input" name="department_id" size="1">
-          {% for dep_id in ids %}
-            {% if dep_id == employee_data['department_id'] %}
-            <option selected="selected" value="{{dep_id}}">{{dep_id}}</option>
-          {% else %}
-            <option value="{{dep_id}}">{{dep_id}}</option>
-          {% endif %}
+  <div class="content-section">
+    <h1>Employees</h1>
+    {% if not employees %}
+      <p>No results</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Department</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for employee in employees %}
+            <tr>
+              <td><a href="{{ url_for('emp.show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+              <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+              <td>{{ employee.salary }}</td>
+              <td>{{ employee.department.name }}</td>
+              <td><a class="btn btn-secondary btn-sm" href="{{ url_for('emp.update_employee', employee_id=employee.id) }}">Update</a></td>
+            </tr>
           {% endfor %}
-        </select>
-        <br>
-        <label for="birthday_input">Date of birthday: </label>
-        <input type="date" name="date_of_birthday" id="birthday_input" value="{{employee_data['date_of_birthday']}}">
-        <br>
-        <label for="salary_input">Salary: </label>
-        <input type="number" name="salary" id="salary_input" value="{{employee_data['salary']}}">
-        <br>
-        <input type="submit" class="button save_button" name="save_button" value="SAVE">
-        <div class="button"><a href="{{url_for('employees')}}">CANCEL</a></div>
-      </form>
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
 {% endblock %}

@@ -1,34 +1,36 @@
-{% extends 'index.html' %}
+{% extends "index.html" %}
+{% block nav_right %}
+  <a class="nav-item nav-link" href="{{ url_for('emp.search_employees') }}">Search employees</a>
+  <a class="nav-item nav-link" href="{{ url_for('emp.add_employee') }}">New employee</a>
+{% endblock %}
 {% block content %}
-<div class="list_title"><b>Employees</b></div>
-<div class="date">
-    <form action="{{url_for('employees')}}" method="post">
-    <label for="start">date from:</label>
-    <input type="date" id="start" name="date_from" value="{{dates[0]}}">
-    <label for="end">by:</label>
-    <input type="date" id="end" name="date_by" value="{{dates[1]}}">
-    <button type="submit" class="refresh_button" name="refresh_button">
-        <img src="../static/refresh_button2.png" alt="">
-    </button>
-    </form>
-</div>
-<div class="row">
-    <div class="name block title">Name</div>
-    <div class="department block title">Department</div>
-    <div class="birthday block title">Date of birthday</div>
-    <div class="salary block title">Salary</div>
-</div>
-<div class="add_button"><a href="{{url_for('add_employee')}}">ADD</a></div>
-{% for i in range(employees_list['names']|length) %}
-    <div class="row">
-            <div class="name block">{{employees_list['names'][i]}}</div>
-    <div class="department block">{{employees_list['departments'][i]}}</div>
-    <div class="birthday block">{{employees_list['dates_of_birthday'][i]}}</div>
-    <div class="salary block">{{employees_list['salaries'][i]}}</div>
-    </div>
-    <div class="edit_button"><img src="../static/edit_button.png">
-        <a href="{{url_for('employee', employee_id=employees_list['ids'][i])}}"></a></div>
-    <div class="delete_button"><img src="../static/delete_button.png">
-        <a href="{{url_for('del_employee', employee_id=employees_list['ids'][i])}}"></a></div>
-{% endfor %}
+  <div class="content-section">
+    <h1>Employees</h1>
+    {% if not employees %}
+      <p>No results</p>
+    {% else %}
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Department</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for employee in employees %}
+            <tr>
+              <td><a href="{{ url_for('emp.show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
+              <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+              <td>{{ employee.salary }}</td>
+              <td>{{ employee.department.name }}</td>
+              <td><a class="btn btn-secondary btn-sm" href="{{ url_for('emp.update_employee', employee_id=employee.id) }}">Update</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
 {% endblock %}

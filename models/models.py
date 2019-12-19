@@ -1,50 +1,28 @@
-import datetime
-
-from sqlalchemy import Column, Integer, String, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
+from app.app import db
 
 
+class Employee(db.Model):
+    """Model for an employee."""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    date_of_birth = db.Column(db.DateTime, nullable=False)
+    salary = db.Column(db.Float, nullable=False)
+    department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
+    department = db.relationship("Department", backref="department", lazy=True)
 
-class Department(Base):
-    """Department class"""
+    def __repr__(self):
+        return f"""
+Employee('{self.id}', 
+         '{self.name}', 
+         '{self.salary}',
+         '{self.date_of_birth}',
+         '{self.department}')"""
 
-    __tablename__ = 'department'
 
-    department_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False, unique=True)
+class Department(db.Model):
+    """Model for a department."""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
 
-    employees = relationship('Employee')
-
-    def __init__(self, name): # init class by name
-        self.name = name
-
-class Employee(Base):
-    """Employee class"""
-
-    __tablename__ = 'employee'
-
-    employee_id = Column(Integer, primary_key=True)
-    name = Column(String, default='User')
-    date_of_birth = Column(Date, nullable=False)
-    salary = Column(Integer, default=0)
-    department_id = Column(Integer, ForeignKey('department.department_id'),
-                           nullable=False)
-
-    def __init__(self, name, date_of_birth, salary, department_id):
-        self.name = name
-        if isinstance(date_of_birth, datetime.date):
-            self.date_of_birth = date_of_birth
-        else:
-            self.date_of_birth = Employee.date_from_str(date_of_birth)
-        self.salary = salary
-        self.department_id = department_id
-
-    @staticmethod
-    def date_from_str(str_object):
-        """Convert string to date
-        @param: format dd/mm/yyyy
-        """
-        return datetime.datetime.strftime(str_object, "%d/%m/%y")
+    def __repr__(self):
+        return f"Department('{self.id}','{self.name}')"
