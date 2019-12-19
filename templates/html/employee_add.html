@@ -1,0 +1,24 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="list_title"><b>Employee</b></div>
+<form class="form" action="{{url_for('add_employee')}}" method="post">
+        <label for="name_input">Name: </label>
+        <input type="text" name="name" id="name_input" value="" minlength="2" maxlength="45">
+        <br>
+        <label for="department_input">Department: </label>
+        <select class="departments_list" id="department_input" name="department_id" size="1">
+          {% for dep_id in ids %}
+            <option value="{{dep_id}}">{{dep_id}}</option>
+          {% endfor %}
+        </select>
+        <br>
+        <label for="birthday_input">Date of birthday: </label>
+        <input type="date" name="date_of_birthday" id="birthday_input" value="">
+        <br>
+        <label for="salary_input">Salary: </label>
+        <input type="number" name="salary" id="salary_input" value="">
+        <br>
+        <input type="submit" class="button save_button" name="save_button" value="SAVE">
+        <div class="button"><a href="{{url_for('employees')}}">CANCEL</a></div>
+      </form>
+{% endblock %}

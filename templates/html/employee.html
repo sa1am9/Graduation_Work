@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="list_title"><b>Employee</b></div>
+      <form class="form" action="{{url_for('employee', employee_id=employee_data['id'])}}" method="post">
+        <label for="name_input">Name: </label>
+        <input type="text" name="name" id="name_input" value="{{employee_data['name']}}" minlength="2" maxlength="45">
+        <br>
+        <label for="department_input">Department: </label>
+        <select class="departments_list" id="department_input" name="department_id" size="1">
+          {% for dep_id in ids %}
+            {% if dep_id == employee_data['department_id'] %}
+            <option selected="selected" value="{{dep_id}}">{{dep_id}}</option>
+          {% else %}
+            <option value="{{dep_id}}">{{dep_id}}</option>
+          {% endif %}
+          {% endfor %}
+        </select>
+        <br>
+        <label for="birthday_input">Date of birthday: </label>
+        <input type="date" name="date_of_birthday" id="birthday_input" value="{{employee_data['date_of_birthday']}}">
+        <br>
+        <label for="salary_input">Salary: </label>
+        <input type="number" name="salary" id="salary_input" value="{{employee_data['salary']}}">
+        <br>
+        <input type="submit" class="button save_button" name="save_button" value="SAVE">
+        <div class="button"><a href="{{url_for('employees')}}">CANCEL</a></div>
+      </form>
+{% endblock %}

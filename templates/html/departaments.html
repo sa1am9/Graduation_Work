@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="list_title"><b>Departments</b></div>
+<div class="row">
+    <div class="department_number block title">Department number</div>
+    <div class="employees block title">Employees</div>
+    <div class="average_salary block title">Average salary</div>
+</div>
+<div class="add_button"><a href="{{url_for('add_department')}}">ADD</a></div>
+{% for i in range(departments_list['ids']|length) %}
+    <div class="row">
+            <div class="department_number block">{{departments_list['ids'][i]}}</div>
+            <div class="employees block">
+                {% if departments_list['employees'][i]|length == 0 %}
+                    <p>...</p>
+                {% endif %}
+                {% for employee in departments_list['employees'][i] %}
+                    {{employee}};
+                {% endfor %}
+            </div>
+            <div class="average_salary block">{{departments_list['salaries'][i]}}</div>
+    </div>
+    <div class="edit_button"><img src="../static/edit_button.png">
+        <a href="{{url_for('department', dep_id=departments_list['ids'][i])}}"></a></div>
+    <div class="delete_button"><img src="../static/delete_button.png">
+        <a href="{{url_for('del_department', dep_id=departments_list['ids'][i])}}"></a></div>
+{% endfor %}
+{% endblock %}
