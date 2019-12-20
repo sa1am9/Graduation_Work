@@ -10,6 +10,6 @@ install:
 
 
 script:
-  - python -m pytest tests/ --cov=.
+  - python -m pytest tests/ --cov=flask_tests.
 after_success:
   - coveralls
