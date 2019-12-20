@@ -2,27 +2,39 @@ from app.app import db
 
 
 class Employee(db.Model):
-    """Model for an employee."""
+    """
+    Create an Employee table
+    """
+
+    # Ensures table will be named in plural and not in singular
+    # as is the name of the model
+    __tablename__ = 'employees'
+
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    date_of_birth = db.Column(db.DateTime, nullable=False)
-    salary = db.Column(db.Float, nullable=False)
-    department_id = db.Column(db.Integer, db.ForeignKey("department.id"), nullable=False)
-    department = db.relationship("Department", backref="department", lazy=True)
+    salary = db.Column(db.Integer, index=True, unique=True)
+    name = db.Column(db.String(60), index=True, unique=True)
+    date_of_birth = db.Column(db.String(60), index=True)
+
+
+    department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
+
 
     def __repr__(self):
-        return f"""
-Employee('{self.id}', 
-         '{self.name}', 
-         '{self.salary}',
-         '{self.date_of_birth}',
-         '{self.department}')"""
+        return '<Employee: {}>'.format(self.username)
 
 
 class Department(db.Model):
-    """Model for a department."""
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), unique=True, nullable=False)
+    """
+    Create a Department table
+    """
 
+    __tablename__ = 'departments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(60), unique=True)
+    description = db.Column(db.String(200))
+    employees = db.relationship('Employee', backref='department',
+                                lazy='dynamic')
     def __repr__(self):
-        return f"Department('{self.id}','{self.name}')"
+        return '<Department: {}>'.format(self.name)
+

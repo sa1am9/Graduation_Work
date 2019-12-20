@@ -10,7 +10,7 @@ class EmployeeForm(FlaskForm):
     name = StringField(
         "Name", validators=[DataRequired(), Length(min=2, max=50)]
     )
-    date_of_birth = DateField("Date of Birth", validators=[DataRequired()])
+    date_of_birth = DateField("Date of Birth", format='%m/%d/%Y', validators=[DataRequired()])
     salary = DecimalField("Salary", validators=[DataRequired()])
     department_id = SelectField("Department", coerce=int, choices=[
         (department.id, department.name) for department in

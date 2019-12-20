@@ -46,7 +46,7 @@ def show_departments():
             avg_salaries[department.id] = 0
 
     return render_template(
-        "departments.html", departments=departments,
+        "html/departaments.html", departments=departments,
         avg_salaries=avg_salaries, title="All departments"
     )
 
@@ -65,7 +65,7 @@ def add_department():
         return redirect(url_for("dep.show_departments"))
 
     return render_template(
-        "departament_add.html", title="Add new department",
+        "html/departament_add.html", title="Add new department",
         form=form, legend="New Department"
     )
 
@@ -75,7 +75,7 @@ def show_department(department_id):
     """Render page of a department with a given id"""
     department = Department.query.get_or_404(department_id)
     return render_template(
-        "department.html", title=department.name, department=department
+        "html/departament.html", title=department.name, department=department
     )
 
 
@@ -96,7 +96,7 @@ def update_department(department_id):
         form.name.data = department.name
 
     return render_template(
-        "departament_add.html", title="Update department",
+        "html/departament_add.html", title="Update department",
         form=form, legend=f"Update {department.name}"
     )
 

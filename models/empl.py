@@ -11,7 +11,7 @@ emp = Blueprint("emp", __name__)
 def show_employees():
     """Render a list of all employees"""
     employees = Employee.query.order_by(Employee.id).all()
-    return render_template("employees.html", employees=employees,
+    return render_template("html/employees.html", employees=employees,
                            title="All employees")
 
 
@@ -23,9 +23,9 @@ def add_employee():
     if form.validate_on_submit():
         # Create new Employee with values from the form.
         employee = Employee(
+            salary=int(form.salary.data),
             name=form.name.data,
             date_of_birth=form.date_of_birth.data,
-            salary=form.salary.data,
             department_id=form.department_id.data,
         )
         db.session.add(employee)
@@ -34,7 +34,7 @@ def add_employee():
         return redirect(url_for("emp.show_employees"))
 
     return render_template(
-        "employee_add.html", title="Add new employee",
+        "html/employee_add.html", title="Add new employee",
         form=form, legend="New Employee"
     )
 
@@ -44,7 +44,7 @@ def show_employee(employee_id):
     """Render page of an employee with a given id"""
     employee = Employee.query.get_or_404(employee_id)
     return render_template(
-        "employee.html", title=employee.name, employee=employee
+        "html/employee.html", title=employee.name, employee=employee
     )
 
 
@@ -73,7 +73,7 @@ def update_employee(employee_id):
         form.department_id.data = employee.department_id
 
     return render_template(
-        "employee_add.html", title="Update employee",
+        "html/employee_add.html", title="Update employee",
         form=form, legend=f"Update {employee.name}"
     )
 
@@ -96,9 +96,9 @@ def search_employees():
         employees = Employee.query\
             .filter(form.from_date.data <= Employee.date_of_birth,
                     Employee.date_of_birth <= form.to_date.data).all()
-        return render_template("employees.html", employees=employees,
+        return render_template("html/employees.html", employees=employees,
                                title="Search results")
     return render_template(
-        "search.html", title="Search employees", form=form,
+        "html/search.html", title="Search employees", form=form,
         legend="Search employees by date of birth"
     )
