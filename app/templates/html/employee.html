@@ -23,7 +23,7 @@
           {% for employee in employees %}
             <tr>
               <td><a href="{{ url_for('emp.show_employee', employee_id=employee.id) }}">{{ employee.name }}</a></td>
-              <td>{{ employee.date_of_birth.strftime("%Y-%m-%d") }}</td>
+              <td>{{ employee.date_of_birth }}</td>
               <td>{{ employee.salary }}</td>
               <td>{{ employee.department.name }}</td>
               <td><a class="btn btn-secondary btn-sm" href="{{ url_for('emp.update_employee', employee_id=employee.id) }}">Update</a></td>

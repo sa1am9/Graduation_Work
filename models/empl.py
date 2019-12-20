@@ -2,7 +2,7 @@ from flask import render_template, Blueprint, url_for, redirect, request, flash
 from models.models import Employee
 from app.app import db
 from forms.forrms import EmployeeForm, SearchForm
-
+from datetime import datetime
 
 emp = Blueprint("emp", __name__)
 
@@ -23,7 +23,7 @@ def add_employee():
     if form.validate_on_submit():
         # Create new Employee with values from the form.
         employee = Employee(
-            salary=int(form.salary.data),
+            salary=form.salary.data,
             name=form.name.data,
             date_of_birth=form.date_of_birth.data,
             department_id=form.department_id.data,
@@ -43,6 +43,7 @@ def add_employee():
 def show_employee(employee_id):
     """Render page of an employee with a given id"""
     employee = Employee.query.get_or_404(employee_id)
+
     return render_template(
         "html/employee.html", title=employee.name, employee=employee
     )
@@ -81,6 +82,7 @@ def update_employee(employee_id):
 @emp.route("/employee/<int:employee_id>/delete", methods=["POST"])
 def delete_employee(employee_id):
     """Delete employee with a given id"""
+
     employee = Employee.query.get_or_404(employee_id)
     db.session.delete(employee)
     db.session.commit()

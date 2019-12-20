@@ -11,9 +11,9 @@ class Employee(db.Model):
     __tablename__ = 'employees'
 
     id = db.Column(db.Integer, primary_key=True)
-    salary = db.Column(db.Integer, index=True, unique=True)
+    salary = db.Column(db.Integer, index=True)
     name = db.Column(db.String(60), index=True, unique=True)
-    date_of_birth = db.Column(db.String(60), index=True)
+    date_of_birth = db.Column(db.DateTime(60), index=True)
 
 
     department_id = db.Column(db.Integer, db.ForeignKey('departments.id'))
